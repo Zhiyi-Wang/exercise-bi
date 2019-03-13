@@ -313,6 +313,7 @@ head(num_num)
 
 ```{r, eval=TRUE}
 base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
+
 scatp1 = base +  stat_density_2d(aes(fill = ..density..), 
                                  geom = "raster", contour = FALSE)
 scatp2=scatp1 + geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
