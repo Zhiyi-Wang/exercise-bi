@@ -287,36 +287,6 @@ all3+coord_flip()
 
 #Exercise-3:Complete the information needed in the previous plots.
 
-```{r, echo=FALSE}
-anovaData=crimeY2000[crimeY2000$YearsToReport>=5,]
-
-tapply(anovaData$YearsToReport, anovaData$Precinct, mean,na.rm=T)
-
-install.packages("Rmisc")
-library(Rmisc)
-
-group.CI(YearsToReport ~ Precinct, 
-         data=anovaData, 
-         ci = 0.95)
-```
-
-```{r, echo=FALSE}
-anovaData=anovaData[complete.cases(anovaData),]
-
-install.packages("ggpubr")
-library(ggpubr)
-ggline(data=anovaData,x = "Precinct", y = "YearsToReport",add = 'mean_ci',
-       error.plot = "pointrange") + scale_y_continuous(breaks=seq(7,10,0.5))
-
-```
-
-```{r testAnova, echo=FALSE}
-res.aov <- aov(YearsToReport ~ Precinct, data = anovaData)
-
-summary(res.aov)[[1]]$Pr[1]
-
-kruskal.test(YearsToReport ~ Precinct, data = anovaData)
-```
 
 ## Numerical-Numerical relationships
 
@@ -339,74 +309,17 @@ crimesByNeigh=as.data.frame(crimesByNeigh)%>%rownames_to_column()
 num_num=merge(daysByNeigh,crimesByNeigh) 
 head(num_num)
 
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
-plot1= base +  geom_point() 
-plot2 = plot1 + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood",
-                     caption =sourceText)
-plot3 = plot2 + theme(panel.background =element_rect(fill = "white",colour = "grey50"))
-plot3
-```
-
-```{r ggscatter, echo=FALSE}
-library(ggrepel)
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh,
-                           label=rowname)) 
-plot1= base +  geom_point() 
-plot2 = plot1 + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood",
-                     caption =sourceText)
-plot3 = plot2 + theme(panel.background =element_rect(fill = "white",colour = "grey50"))
-plot3 + geom_text_repel()
 ```
 
 ```{r, echo=FALSE}
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh,label=rowname)) 
-plot1= base +  geom_point() 
-plot2 = plot1 + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood",
-                     caption =sourceText)
-plot3 = plot2 + theme(panel.background =element_rect(fill = "white",colour = "grey50"))
-plot3 + geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
-                                         num_num$rowname, "")))
-```
-
-```{r simpleScatter,echo=FALSE}
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
-scatp1 = base +  geom_point() 
-scatp2 = scatp1 + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood",
-                     caption =sourceText)
-scatp3 = scatp2 + theme(panel.background =element_rect(fill = "white",colour = "grey50"))
-scatp3 + geom_text(aes(label=ifelse(crimesByNeigh>=5,num_num$rowname, "")))
-```
-
-```{r scatterSEARCH, echo=FALSE}
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh,label=rowname)) 
-base +  geom_point() + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood",
-                     caption =sourceText) + theme(panel.background =element_rect(fill = "white",colour = "grey50")) +
-geom_text_repel(aes(label=ifelse(num_num$rowname=='NORTHGATE',
-                                                        num_num$rowname, "")))
-```
-
-```{r hexbins, echo=FALSE}
-install.packages("hexbin")
-base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
-scatp1 = base +  geom_hex(bins = 10)
-scatp2= scatp1 + geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
-                                                  num_num$rowname,
-                                                  ""))) 
-scatp2 + scale_fill_distiller(palette ="Greys",direction=1) + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood (at least 5%)",
-                     caption =sourceText)
-
-```
-
-```{r density,echo=FALSE}
 base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
 scatp1 = base +  stat_density_2d(aes(fill = ..density..), 
                                  geom = "raster", contour = FALSE)
 scatp2=scatp1+geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
                                                num_num$rowname, "")))
 scatp3 = scatp2 +  theme(legend.position='none') 
-scatp4= scatp3 + scale_fill_distiller(palette="Greys", direction=1)  + labs(title="exercise4:Means of days to report and proportion of crimes by neighborhood (at least 5%)",
+scatp4= scatp3 + scale_fill_distiller(palette="Greys", direction=1)  + labs(title="Exercise 4: Means of days to report and proportion of crimes \n by neighborhood (at least 5%)",
                      caption =sourceText)
-
 scatp5 = scatp4 +  scale_x_continuous(expand = c(0, 0)) + 
          scale_y_continuous(expand = c(0, 0)) 
 scatp5
