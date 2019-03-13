@@ -311,11 +311,11 @@ head(num_num)
 
 ```
 
-```{r, echo=FALSE}
+```{r, eval=TRUE}
 base = ggplot(num_num, aes(daysByNeigh,crimesByNeigh)) 
 scatp1 = base +  stat_density_2d(aes(fill = ..density..), 
                                  geom = "raster", contour = FALSE)
-scatp2=scatp1+geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
+scatp2=scatp1 + geom_text_repel(aes(label=ifelse(crimesByNeigh>=5,
                                                num_num$rowname, "")))
 scatp3 = scatp2 +  theme(legend.position='none') 
 scatp4= scatp3 + scale_fill_distiller(palette="Greys", direction=1)  + labs(title="Exercise 4: Means of days to report and proportion of crimes \n by neighborhood (at least 5%)",
